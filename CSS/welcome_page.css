@@ -1,0 +1,31 @@
+.employee {
+  float:left;
+  margin-left:25%;
+  margin-bottom:10px;
+  width:10%;
+  background-color: white;
+
+}
+.vendor {
+  float:right;
+  margin-right:25%;
+  margin-bottom:10px;
+  width:10%;
+  background-color: white;
+
+}
+.background{
+     background-image: url("welcomepage_background.jpg");
+     min-height: 700px;
+     background-repeat: no-repeat;
+     background-size:cover;
+     background-position:center;
+
+
+
+
+}
+
+
+
+
