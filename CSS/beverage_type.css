@@ -1,4 +1,4 @@
-.hot_beverage {
+ .hot_beverage {
   float:left;
   margin-top:5%;
   margin-left:10%;
@@ -7,7 +7,7 @@
   text-align:center;
   display:inline-block;
   }
-.cold_beverage{
+ .cold_beverage{
   float:right;
   margin-top:5%;
   margin-right:10%;
