@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../JavaScript/script_beverage.js"></script>
+    <style>
+        table, th, td {
+  border: 1px solid white;
+        }
+
+    </style>
+    <a href="cart_list_coldbeverage.html"><input type="button" value="JuiceWorld"></a>
+</head>
+<body>
+<table>
+    <tr>
+        <td valign="top">
+            <table>
+                <thead>
+                <tr>
+                    <td colspan="2">
+                        <h3><i>MADRAS CAFE COFFEE</i></h3>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/tea.jpg" alt="tea" width=50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(1,'tea',1)"/>
+                    </td>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/coffee.jpg" alt="coffee" width="100%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(2,'coffee',1)"/>
+                    </td>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/blacktea.jpg" alt="blacktea" width="50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(3,'blacktea',1)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/gingertea.jpg" alt="gingertea" width=50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(4,'gingertea',1)"/>
+                    </td>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/greentea.jpg" alt="greentea" width="100%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(5,'greentea',1)"/>
+                    </td>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/lemontea.jpg" alt="lemontea" width="50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(6,'lemontea',1)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/horlicks.jpg" alt="horlicks" width=50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(7,'horlicks',1)"/>
+                    </td>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/boost.jpg" alt="boost" width="100%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(8,'boost',1)"/>
+                    </td>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/milk.jpg" alt="milk" width="50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(9,'milk',1)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="../image_folder/image_hot_beverage/bournvita.jpg" alt="bournvita" width=50%" height="200px"><br>
+                        <input type="button" value="Add" onclick="AddtoCart(10,'bournvita',1)"/>
+                    </td>
+                </tr>
+
+
+                </tr>
+                </tbody>
+
+            </table>
+        </td>
+        <td valign="top">
+            <table id="ordered_item_title">
+                <thead>
+                <tr>
+                    <td>
+                        Id
+                    </td>
+                    <td>
+                        Itemname
+                    </td>
+                    <td>
+                        Quantity
+                    </td>
+                </tr>
+                </thead>
+                <tbody id="ordered_items_list">
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

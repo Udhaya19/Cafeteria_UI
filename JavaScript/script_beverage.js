@@ -9,24 +9,32 @@ var item_cart = [];
         for(var items in item_cart){
             //add new row
             var row=ordered_items_list.insertRow();
-            //create three cells for product properties
-            var cellName = row.insertCell(0);
-            var cellQuantity = row.insertCell(1);
+            //create two cells for product properties
+            var cellId=row.insertCell(0)
+            var cellName = row.insertCell(1);
+            var cellQuantity = row.insertCell(2);
             //fill cells with values from current product object of our array
+            cellId.innerHTML=item_cart[items].Id;
             cellName.innerHTML = item_cart[items].Name;
             cellQuantity.innerHTML = item_cart[items].Quantity;
+              if (item_cart[items].Id==cellId)
+                {
+
+                alert('This item is already exits')
+                return
+                }
 
         }
-
     }
 
-
-    function AddtoCart(name,quantity){
-       //Below we create JavaScript Object that will hold three properties you have mentioned:    Name,Description
+    function AddtoCart(id,name,quantity){
+       //Below we create JavaScript Object that will hold two properties you have mentioned:    Name,Quantity
        var singleProduct = {};
        //Fill the product object with data
+       singleProduct.Id=id
        singleProduct.Name=name;
        singleProduct.Quantity=quantity;
+
 
        //Add newly created product to our shopping cart
        item_cart.push(singleProduct);
@@ -35,6 +43,14 @@ var item_cart = [];
 
     }
 
+
+
+    function myFunction() {
+        document.getElementById("myNumber").stepUp();
+        }
+    function myFunction1() {
+    document.getElementById("myNumber").stepDown();
+        }
 
 
 
