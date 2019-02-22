@@ -1,6 +1,9 @@
 def post_data(connection, user_data):
     cursor = connection.cursor()
-    cursor.execute("""insert into student_details(student_id,student_name) values(%s, %s);""",
-                   (user_data['id'], user_data['name']))
+    cursor.execute("""SELECT * INTO thoughtworks_cafeteria FROM employee_details WHERE employee_id==employeeid;
+                        IF NOT FOUND THEN 
+                        RAISE EXCEPTION 'employee % not found',employeeid
+                        END IF;""",
+                   (user_data['employeeid']))
     connection.commit()
     cursor.close()

@@ -13,19 +13,21 @@ connection = psycopg2.connect("dbname=thoughtworks_cafeteria user=admin")
 def home():
     return render_template('front_page.html')
 
-@app.route('/employeeloginpage',methods=['GET'])
+
+@app.route('/employeeloginpage')
 def employee_login():
-    post_data(connection, request.form)
-    return render_template('employee_id.html',shared=request.form)
+    return render_template('employee_id.html')
+
+
 @app.route('/vendorloginpage')
 def vendor_login():
     return render_template('vendor_login.html')
 
-# @app.route('beverage_type')
-# def beverage_type():
-#
-#     return render_template('beverage_type.html')
 
+@app.route('/beverage',methods=['POST'])
+def beverage_type():
+    post_data(connection, request.form)
+    return render_template('student_details.html', shared=request.form)
 
 
 # @app.route('/post-data', methods=['POST'])
