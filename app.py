@@ -1,7 +1,6 @@
 import psycopg2
 from flask import Flask, request, render_template
 from flask_cors import CORS
-from modules.post_details_to_databse import post_data
 
 app = Flask(__name__)
 CORS(app)
@@ -18,25 +17,58 @@ def employee_login():
     return render_template('employee_id.html')
 
 
-def validate_employee(connection, user_data):
+def post_data(connection, user_data):
     cursor = connection.cursor()
-    result = cursor.execute("""select employee_id from employee_details where employee_id = %s ;""",
-                            (user_data['employeeid'],))
+    cursor.execute("""insert into employee_login_details(employee_id) values(%s);""",
+                   (user_data['employeeid'],))
     connection.commit()
     cursor.close()
-    if result == user_data['employeeid']:
-        return render_template('beverage_type.html')
-    else:
+
+
+def validate_employee(connection, user_data):
+    cursor = connection.cursor()
+    cursor.execute("select employee_id from employee_details where employee_id=%(emp_id)s",
+                   {'emp_id': user_data['employeeid']})
+    result = cursor.fetchall()
+    cursor.close()
+    if len(result) == 0:
         return render_template('employee_id.html')
+    else:
+        post_data(connection, user_data)
+        return render_template('beverage_type.html')
+
 
 @app.route('/beverage', methods=['POST'])
 def beverage_type():
-    post_data(connection, request.form)
-    return render_template('beverage_type.html', shared=request.form)
+    return validate_employee(connection, request.form)
+
+
+@app.route('/cold_beverage')
+def cold_beverage():
+    return render_template('cart_list_coldbeverage.html')
+
+
+@app.route('/hot_beverage')
+def hot_beverage():
+    return render_template('cart_list_hotbeverage.html')
+
+
 @app.route('/vendorloginpage')
 def vendor_login():
     return render_template('vendor_login.html')
 
+
+def validate_vendor(connection, user_data):
+    cursor = connection.cursor()
+    cursor.execute("select vendor_name,vendor_password from vendor_login where vendor_name=%(id)s,vendor_password=%(password)s",
+                   {'id': user_data['employeeid'],'password':user_data['']})
+    result = cursor.fetchall()
+    cursor.close()
+    if len(result) == 0:
+        return render_template('vendor_login.html')
+    else:
+        post_data(connection, user_data)
+        return render_template('report_page.html')
 
 
 if __name__ == '__main__':
