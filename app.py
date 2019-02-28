@@ -55,20 +55,67 @@ def hot_beverage():
 
 @app.route('/vendorloginpage')
 def vendor_login():
-    return render_template('vendor_login.html')
+    return render_template('vendor_type.html')
+
+
+@app.route('/juice_world')
+def jw_login():
+    return render_template("vendor_login.html")
+
+
+@app.route('/madras_cafe')
+def mc_login():
+    return render_template("vendor_login.html")
+
+
+@app.route('/vendor_operation', methods=['POST'])
+def vendor_operation():
+    return validate_vendor(connection, request.form)
 
 
 def validate_vendor(connection, user_data):
     cursor = connection.cursor()
-    cursor.execute("select vendor_name,vendor_password from vendor_login where vendor_name=%(id)s,vendor_password=%(password)s",
-                   {'id': user_data['employeeid'],'password':user_data['']})
+    cursor.execute("select vendor_id from vendor_login where vendor_id=%(vendor_id)s",
+                   {'vendor_id': user_data['id']})
+
     result = cursor.fetchall()
     cursor.close()
     if len(result) == 0:
         return render_template('vendor_login.html')
     else:
-        post_data(connection, user_data)
-        return render_template('report_page.html')
+        return render_template('vendor_operation.html')
+
+
+@app.route('/availablity')
+def cold():
+    rows = database_connection_cold()
+    items = []
+    for row in rows:
+        items.append(row[0])
+    return render_template("home_page.html", items=items)
+
+
+def database_connection_cold():
+    cursor = connection.cursor()
+    cursor.execute("select  item_name from beverage_type_details where reference_id= '54321'")
+    record = cursor.fetchall()
+    return record
+
+
+@app.route('/submission', methods=['POST'])
+def menu_list_cold():
+    return database_connection_list_cold(connection, request.form)
+
+
+def database_connection_list_cold(connection, user_data):
+    cursor = connection.cursor()
+    array = tuple(user_data.keys())
+    sql_query = "update  beverage_type_details set availability = 'no'"
+    sql = "update beverage_type_details set availability = 'yes' where item_name IN %s"
+    cursor.execute(sql_query)
+    cursor.execute(sql, (array,))
+    connection.commit()
+    cursor.close()
 
 
 if __name__ == '__main__':
