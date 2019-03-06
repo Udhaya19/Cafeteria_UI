@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 style="text-align:center">cold Beverage</h1>
+<form action="/submission" method="POST">
+    <input type="hidden" name="vendorname" value={{name}}>
+
+    <ul>
+        {% for item in items %}
+        <li style="list-style-type:none;"><input type="checkbox" name="{{item}}">{{ item }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <input type="submit" value="Submit">
+
+</form>
+</body>
