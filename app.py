@@ -58,7 +58,7 @@ def vendor_operation():
 def validate_vendor(connection, user_data):
     cursor = connection.cursor()
     cursor.execute(
-        "select vendor_id,vendor_password from vendor_login where (vendor_id=%(vendor_id)s AND vendor_password=%(vendor_password)s)",
+        "select id,password from vendor_login where (id=%(vendor_id)s AND password=%(vendor_password)s)",
         {'vendor_id': user_data['id'], 'vendor_password': user_data['psw']}, )
     result = cursor.fetchall()
     cursor.close()
@@ -135,60 +135,38 @@ def display_cold_available_items():
     cursor = connection.cursor()
     cursor.execute("select  item_name from beverages where availability  ='1' AND vendor_id=12345")
     record = cursor.fetchall()
-
     return record
 
 
-# @app.route('/update_to_order_page', methods=['POST'])
-# def update_to_order_page():
-#     return update(connection, request.form)
-#
-#
-# def update(connection, update_data):
-#     cursor = connection.cursor()
-#     juices = tuple(update_data.keys())
-#     update_details="insert into cart_details (employee_id) (select employee_id from items where name_of_items = %s)";
-#     cursor.execute(update_details, (juices[0],))
-#
-#     connection.commit()
-#     cursor.close()
-#
+@app.route('/cold_item')
+def list_cold_item():
+    return render_template("last_page.html")
 
 
-# @app.route('/list_hot_item', methods=['POST'])
-# def list_hot_item():
-#     return list_hot_items(connection, request.form)
-#
-#
-# def list_hot_items(connection, user_data):
-#     cursor = connection.cursor()
-#
-#     query = "select item_id from beverages where item_name=%(item)s", {'item': user_data['item']}
-#     cursor.execute(query)
-#     cursor.fetchall()
-#     insert="insert into cart_details values where item_id=%(query)s"
-#     cursor.execute(insert)
-#
-#     cursor.close()
-#
+@app.route('/hot_item', methods=['POST'])
+def update_item():
+    return update(connection, request.form)
 
 
-#
-# @app.route('/cold_beverage')
-# def cold_item():
-#     rows = display_available_items()
-#     items = []
-#     for row in rows:
-#         items.append(row[0])
-#     return render_template("jinja_item_available_employee.html", items=items)
-#
-#
-# def display_available_items():
-#     cursor = connection.cursor()
-#     cursor.execute("select item_name from beverage_type_details where availability='yes'")
-#     record = cursor.fetchall()
-#     return record
-#
+def update(connection, update_data):
+    item = update_data.to_dict()
+    a = []
+    b = []
+    i = 0
+    j = 1
+    for row in range(len(item)):
+        a.append(list(item.keys())[i])
+        b.append(list(item.values())[j])
+
+        cursor = connection.cursor()
+        update_details = "insert into cart_details (item_id,quantity) select item_id, {} from beverages where item_name = '{}'".format(
+            b[0], a[0])
+        cursor.execute(update_details)
+        connection.commit()
+        cursor.close()
+        i += 2
+        j += 2
+    return update_details
 
 
 if __name__ == '__main__':
