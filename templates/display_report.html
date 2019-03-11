@@ -5,6 +5,25 @@
     <title>Title</title>
 </head>
 <body>
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+        <td>EmployeeId</td>
+         <td>ItemId</td>
+         <td>ItemName</td>
+        <td>Date</td>
+         <td>Cost</td>
+    </tr>
 
+    {% for row in items %}
+        <tr>
+        {% for value in row %}
+            <td>{{ value }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}<br>
+
+   <ul style="list-style-type:none;"><li> TOTAL COST:{{item}} </li></ul>
+
+</table>
 </body>
 </html>
