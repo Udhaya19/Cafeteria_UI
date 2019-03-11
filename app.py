@@ -27,7 +27,7 @@ def validate_employee(connection, user_data):
     if len(result) == 0:
         return render_template('employee_id.html')
     else:
-        return render_template('beverage_type.html')
+        return render_template('beverage_type.html', item=user_data['employeeid'])
 
 
 @app.route('/beverage', methods=['POST'])
@@ -106,67 +106,134 @@ def database_connection_list_cold(connection, user_data):
     cursor.close()
 
 
-@app.route('/list_hot_item')
-def hot_item():
+@app.route('/list_hot_item', methods=['POST'])
+def item_list():
+    return hot_item(connection, request.form)
+
+
+def hot_item(connection, user_data):
+    connection.cursor()
+    array_values = tuple(user_data.values())
+    array_value = array_values[0]
     rows = display_hot_available_items()
     items = []
     for row in rows:
-        items.append(row[0])
-    return render_template("jinja_hot_item.html", items=items)
+        items.append({"id": row[0], "name": row[1]})
+    return render_template("jinja_hot_item.html", items=items, empid=array_value)
 
 
 def display_hot_available_items():
     cursor = connection.cursor()
-    cursor.execute("select item_name from beverages where availability='1' AND vendor_id=54321")
+    cursor.execute("select item_id,item_name from beverages where availability='1' AND vendor_id=54321")
     record = cursor.fetchall()
     return record
 
 
-@app.route('/list_cold_item')
-def cold_items():
+@app.route('/list_cold_item', methods=['POST'])
+def item_value():
+    return cold_item(connection, request.form)
+
+
+def cold_item(connection, user_data):
+    connection.cursor()
+    array_values = tuple(user_data.values())
+    array_value = array_values[0]
     rows = display_cold_available_items()
-    items = []
+    item = []
     for row in rows:
-        items.append(row[0])
-    return render_template("jinja_cold_item.html", items=items)
+        item.append({"id": row[0], "name": row[1]})
+    return render_template("jinja_cold_item.html", items=item, empid=array_value)
 
 
 def display_cold_available_items():
     cursor = connection.cursor()
-    cursor.execute("select  item_name from beverages where availability  ='1' AND vendor_id=12345")
+    cursor.execute("select  item_id,item_name from beverages where availability  ='1' AND vendor_id=12345")
     record = cursor.fetchall()
     return record
 
 
-@app.route('/cold_item')
-def list_cold_item():
-    return render_template("last_page.html")
+@app.route('/cold_item', methods=['POST'])
+def update_items():
+    rows = updates(connection, request.form)
+    return render_template('front_page.html', item=rows)
+
+
+def updates(connection, user_data):
+    item_values = list(user_data.values())
+    employee_id = item_values[0]
+    item_values.remove(item_values[0])
+    item_key = list(user_data.keys())
+    item_key.remove(item_key[0])
+    for id in list(item_key):
+        quantity = user_data[id]
+        if int(quantity) != 0:
+            cursor = connection.cursor()
+            update_details = "insert into cart_details(employee_id,quantity,item_id) select {},{},item_id from beverages where item_id= {}".format(
+                employee_id, quantity, id)
+            cursor.execute(update_details)
+            connection.commit()
+            cursor.close()
+        else:
+            continue
 
 
 @app.route('/hot_item', methods=['POST'])
 def update_item():
-    return update(connection, request.form)
+    rows = update(connection, request.form)
+    return render_template('front_page.html', item=rows)
 
 
-def update(connection, update_data):
-    item = update_data.to_dict()
-    a = []
-    b = []
-    i = 0
-    j = 1
-    for row in range(len(item)):
-        a.append(list(item.keys())[i])
-        b.append(list(item.values())[j])
+def update(connection, user_data):
+    item_values = list(user_data.values())
+    employee_id = item_values[0]
+    item_values.remove(item_values[0])
+    item_key = list(user_data.keys())
+    item_key.remove(item_key[0])
+    for id in list(item_key):
+        quantity = user_data[id]
+        if int(quantity) != 0:
+            cursor = connection.cursor()
+            update_details = "insert into cart_details(employee_id,quantity,item_id) select {},{},item_id from beverages where item_id= {}".format(
+                employee_id, quantity, id)
+            cursor.execute(update_details)
+            connection.commit()
+            cursor.close()
+        else:
+            continue
 
-        cursor = connection.cursor()
-        update_details = "insert into cart_details (item_id,quantity) select item_id, {} from beverages where item_name = '{}'".format(
-            b[0], a[0])
-        cursor.execute(update_details)
-        connection.commit()
-        cursor.close()
-        i += 2
-        j += 2
-    return update_details
+
+@app.route('/report_generation', methods=['POST'])
+def report_calculation():
+    report_table = get_data_details(connection, request.form)
+    totalcost = cost_calculation(connection, request.form)
+    cost = totalcost[0]
+    return render_template("display_report.html", item=cost, items=report_table)
+
+
+def get_data_details(connection, user_data):
+    cursor = connection.cursor()
+    array_values = tuple(user_data.values())
+    array_value = array_values[0]
+    sql_update = "select cart_details.employee_id,beverages.item_id,beverages.item_name,cart_details.date,sum(cart_details.quantity*beverages.cost) " \
+                 "FROM cart_details inner join beverages on cart_details.item_id=beverages.item_id  " \
+                 "where beverages.vendor_id = %(vendor_id)s GROUP BY cart_details.employee_id,beverages.item_id,cart_details.date " \
+                 "ORDER BY cart_details.employee_id"
+    cursor.execute(sql_update, {'vendor_id': array_value})
+    report_table = cursor.fetchall()
+    cursor.close()
+    return report_table
+
+
+def cost_calculation(connection, user_data):
+    cursor = connection.cursor()
+    array_values = tuple(user_data.values())
+    array_value = array_values[0]
+    sql_query = "select sum(quantity*cost) from beverages inner join cart_details " \
+                "on beverages.item_id = cart_details.item_id where vendor_id = %(vendor_id)s"
+    cursor.execute(sql_query, {'vendor_id': array_value})
+    totalcost = cursor.fetchall()
+    cursor.close()
+    return totalcost
 
 
 if __name__ == '__main__':
