@@ -15,7 +15,7 @@
 
 }
 .background{
-     background-image: url("Asendas.jpg");
+     background-image: url("../images/welcomepage_background.jpg");
      min-height: 700px;
      background-repeat: no-repeat;
      background-size:cover;

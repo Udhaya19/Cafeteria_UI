@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Type of Beverage</title>
-    <link rel="stylesheet" href="../CSS/beverage_type.css">
+    <link rel="stylesheet"  href="../static/styles/beverage_type.css">
 </head>
-<body background="plain-brown.jpg">
+<body background="../static/images/plain-brown.jpg">
 
 <h2 align="center"><i>Select Hot or Cold Beverage!!!</i></h2>
-<form action="list_beverage.html">
+<form action="/list_hot_item" method="post">
     <div class="hot_beverage">
-        <a href="cart_list_hotbeverage.html">
-        <img src="hot_beverage.jpg" width="450" height="300" align="left">
-        </a>
+        <input type="hidden" name="employeeid" value="{{item}}">
+        <input type="image" src="../static/images/hot_beverage.jpg" width="450" height="300" align="left">
         <h3 align="center">Hot_Beverage</h3>
 
     </div>
 </form>
-<form action="list_beverage.html">
+<form action="/list_cold_item" method="post">
     <div class="cold_beverage">
-        <a href="cart_list_coldbeverage.html">
-        <img src="cold_beverage.jpg" width="450" height="300" align="right">
-        </a>
+        <input type="hidden" name="employeeid" value="{{item}}">
+        <input type="image" src="../static/images/cold_beverage.jpg" width="450" height="300" align="right">
         <h3 align="center">Cold_Beverage</h3>
     </div>
 </form>

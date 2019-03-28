@@ -5,82 +5,25 @@
     <title>hot items</title>
 
 </head>
-<style>
-    .sidenav {
-  height: 100%;
-  width:250px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color:Pink;
-  padding-top: 20px;
-}
- .sidenav_right {
-  height: 100%;
-  width:250px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color:Pink;
-  padding-top: 20px;
-}
+<body>
+<h1 style="text-align:center">HOT BEVERAGE</h1>
 
-.main {
-  margin-left: 300px;
-}
+    <form action="/hot_item" method="post">
 
-
-
-
-</style>
-
-
-
-<form action="/list_hot_item" method="post">
-
-    <div class="main">
-        <h1> Hot Bevarages</h1>
-        <ul>
-            {% for item in items %}
-            <li><input type="button" id="{{name}}" onclick="myFunction1('{{item}}')" name="{{item}}"
-                       value="{{item}}"></li>
-            {% endfor %}
-        </ul>
-    </div>
-</form>
-
-<div class="sidenav_right">
     <ul>
-        <li>  <p id="para"></p>  </li></ul>
-</div>
+        <input type="hidden" name="employeeid" value="{{empid}}">
+        {% for item in items %}
+            <li>{{ item.name }}
+            <input type="text" name="{{item.id}}" value="0"/>
+        </li>
+        {% endfor %}
+    </ul>
 
-<script>
-
-
-
-  var array=[ ];
-
-function myFunction1(demo) {
-  var x = document.getElementById(demo).value;
-  array.push(x);
-  for (i = 0; i < array.length; i++)
-   {
-  document.getElementById("para").innerHTML = array[i];
-  var z = document.createElement("INPUT");
-  z.setAttribute("type","number");
-  z.setAttribute("value","1");
-  document.getElementById("para").append(z);
-  document.getElementById(demo).disabled = true;
-}
-}
-
-</script>
-
-
+<input type="submit" value="Order">
 
 </form>
+
+
 
 
 </body>

@@ -2,44 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>cold items</title>
+    <title>hot items</title>
+
 </head>
 <body>
+<h1 style="text-align:center">COLD BEVERAGE</h1>
 
-<form action="/list_cold_item" method="post">
+    <form action="/cold_item" method="post">
 
     <ul>
+        <input type="hidden" name="employeeid" value="{{empid}}">
         {% for item in items %}
-        <li>{{ item }}
-            <button onclick="myFunction1({{item}})" name="{{item}}">Add to cart</button>
-            <button onclick="myFunction3()">-</button>
-            <input type="number" id="myNumber">
-
-            <button onclick="myFunction2()">+</button>
-
-            <p id="demo"></p>
-
-            <script>
-    function myFunction1(name) {
-    document.getElementById("demo").innerHTML =   name ;
-    }
-    function myFunction2() {
-    document.getElementById("myNumber").stepUp();
-    }
-    function myFunction3() {
-    document.getElementById("myNumber").stepDown();
-    }
-
-
-
-            </script>
-
+            <li>{{ item.name }}
+            <input type="text" name="{{item.id}}" value="0"/>
         </li>
+
         {% endfor %}
     </ul>
 
+<input type="submit" value="Order">
 
 </form>
+
+
 
 
 </body>

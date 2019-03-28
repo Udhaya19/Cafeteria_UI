@@ -5,23 +5,21 @@ Table1 name    :employee_details
 
                 insert into employee_details values(1001,'KavithaKrishnan'),(1002,'GeethaGovindaraj'),(1003,'Soniya');
 
-Table2 name    :employee_login_details
+Table2 name    :vendor_login
 
-                create table employee_login_details(serial_no serial,employee_id integer);
-
-Table3 name    :vendor_login
-
-                create table vendor_login(vendor_id integer PRIMARY KEY,vendor_name varchar(40),vendor_password varchar(10));
+                create table vendor_login(id integer PRIMARY KEY,name varchar(40),password varchar(10));
 
                 insert into vendor_login values(12345,'JuiceWorld','JW12345'),(54321,'MadrasCoffe','MC54321');
 
-Table4 name   :beverage_type_details
+Table3 name   :beverage_type_details
 
-                create table beverage_type_details(reference_id integer,item_id SERIAL,item_name varchar(30),availability varchar(10),cost integer,PRIMARY KEY(reference_id,item_id),FOREIGN KEY(reference_id) REFERENCES vendor_login(vendor_id));
+                create table beverages(vendor_id integer,item_id SERIAL,item_name varchar(30),availability integer,
+                cost integer,FOREIGN KEY(vendor_id) REFERENCES vendor_login(id),PRIMARY KEY(item_id));
 
-Table5 name   :cart_details
+Table4 name   :cart_details
 
-                create table cart_details(employee_id integer,item_id integer,item varchar,quantity integer,date DATE DEFAULT CURRENT_DATE,PRIMARY KEY(employee_id,item_id),FOREIGN KEY(employee_id)REFERENCES employee_details(employee_id));
+                create table cart_details(employee_id integer,item_id integer,item varchar,quantity integer,
+                date DATE DEFAULT CURRENT_DATE,FOREIGN KEY(employee_id)REFERENCES employee_details(employee_id),FOREIGN KEY(item_id)REFERENCES beverages(item_id));
 
 
 

@@ -1,3 +1,16 @@
+let array=[{item_name:'apple',qty:1},{item_name:'orange',qty:1},{item_name:'anjeer',qty:1}]
+array.filter((item)=> item.item_name==='apple')
+
+
+
+
+
+
+
+
+
+
+
 var item_cart = [];
     function display_item_cart(){
         var ordered_items_list=document.getElementById("ordered_items_list");
